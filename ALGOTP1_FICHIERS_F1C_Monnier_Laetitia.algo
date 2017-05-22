@@ -1,0 +1,109 @@
+Laetitia Monnier
+
+BUT : Création d'un algo qui va afficher nos fichiers, nous indiquer dans quel groupe fait partie le verbe, conjuguer les verbes au présent de l'indicatif qui seront ensuite
+stocké dans un fichier conjugaison.
+
+ENTREE : L'utilisateur choisi, à l'aide d'un menu, l'action qu'il veut faire (afficher le fichier de verbe/la conjugaison d'un verbe...).
+
+SORTIE : L'affichage du verbe avec pour information son groupe puis sa conjugaison.
+
+CONST
+	groupe1 = 'er'
+	groupe2 = 'ir'
+	MAX1 = 6
+	MAX2 = 13
+
+TYPE
+	pronomPerso = TABLEAU[1..MAX1] DE CHAINE
+
+TYPE 
+	verbe = TABLEAU[1..MAX2] DE CHAINE
+
+Cette focntion va stocker les pronoms personnels dans un tableau.
+FONCTION initPronomPerso(tabPronom : pronomPerso; n : ENTIER):CHAINE
+DEBUT
+	tabPronom[1] <- 'Je'
+	tabPronom[2] <- 'Tu'
+	tabPronom[3] <- 'Il'
+	tabPronom[4] <- 'Nous'
+	tabPronom[5] <- 'Vous'
+	tabPronom[6] <- 'Ils'
+	initPronomPerso <- tabPronom[n]
+FINFONCTION
+
+Cette fonction va stocker les verbes dans un tableau.
+FONCTION initVerbe(tabVerbe : verbe; n : ENTIER):CHAINE
+DEBUT
+	tabVerbe[1] <- 'rire'
+	tabVerbe[2] <- 'recevoir'
+	tabVerbe[3] <- 'aller'
+	tabVerbe[4] <- 'bouillir'
+	tabVerbe[5] <- 'envoyer'
+	tabVerbe[6] <- 'peindre'
+	tabVerbe[7] <- 'habiter'
+	tabVerbe[8] <- 'payer'
+	tabVerbe[9] <- 'mourir'
+	tabVerbe[10] <- 'hair'
+	tabVerbe[11] <- 'vouloir'
+	tabVerbe[12] <- 'finir'
+	tabVerbe[13] <- 's''amuser'
+	initVerbe <- tabVerbe[n]
+FINFONCTION
+
+Cette procedure va stocker les verbes dans le fichier.
+PROCEDURE stockVerbe(fVerbe : TEXTE, var verbe : CHAINE)
+VAR 
+	compteur : ENTIER
+	tabVerbe : CHAINE
+DEBUT
+	n <- 1
+	ASSIGNER(fVerbe, 'listeVerbe.txt')
+	REECRIRE(fVerbe)
+	POUR compteur DE 1 A MAX2 FAIRE
+		ECRIRE(fVerbe, initVerbe(tabVerbe, n))
+		n <- n + 1
+	FINPOUR
+	FERMER(fVerbe)
+FINPROCEDURE
+
+Cette procedure permet d'afficher le fichier contenant les verbes.
+PROCEDURE afficherVerbe(var fVerbe : TEXTE; verbe : CHAINE)
+VAR 
+	compteur : ENTIER
+	tabVerbe : CHAINE
+DEBUT
+	OUVRIR(fVerbe)
+	POUR compteur DE 1 A MAX2 FAIRE
+		LIRE(fVerbe, tabVerbe[compteur])
+		ECRIRE(tabVerbe[compteur])
+	FINPOUR
+	FERMER(fVerbe)
+FINPROCEDURE
+
+Cette procedure est un menu.
+PROCEDURE menu(var fVerbe : TEXTE; var choix : ENTIER)
+VAR 
+	verbe : CHAINE
+DEBUT
+	ECRIRE('1 : Afficher tous les verbes.')
+	ECRIRE('2 : Afficher les conjugaisons')
+	ECRIRE('3 : Sortir')
+	LIRE(choix)
+	CAS choix PARMI
+		1 : afficherVerbe(fVerbe, verbe)
+		3 : writeln('Quitter')
+	FINCASPARMI
+FINPROCEDURE
+
+-- Programme Principal -- 
+VAR 
+	f1 : TEXTE
+	choix : ENTIER
+
+DEBUT
+	stockVerbe(fVerbe)
+	ECRIRE('- Menu -')
+	REPETER
+		menu(fVerbe, choix)
+	JUSQU'A choix = 3
+FIN
